@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<info>
+	<author>Asfo Zavala</author>
+	<authorURI>http://twitter.com/theasfo</authorURI>
+	<templateName>default</templateName>
+	<description>This is the default template</description>
+	<version>1.0</version>
+	<license>GNU</license>
+	<tags>Hello,world,this,is,the,default,template</tags>
+</info>
