@@ -10,7 +10,13 @@
 |
 */
 
-
+$hook['post_controller_constructor'] = array(
+	'class'    => 'Nexo_wowemu',
+	'function' => 'Wowemu',
+	'filename' => 'Nexo_wowemu.php',
+	'filepath' => 'emulators',
+	'params'   => array()
+);
 
 /* End of file hooks.php */
 /* Location: ./application/config/hooks.php */

@@ -22,11 +22,13 @@ $config['limit_news'] = 5;
 
 $config['limit_comments'] = 10;
 
-$config['modules_locations'] = array(
-        APPPATH.'modules/' => '../modules/',
-    );
+$config['modules_locations'] = array(APPPATH.'modules/' => '../modules/');
 
 $config['template_folder'] = 'views';
+
+$config['emulator'] = 'Trinity';
+
+$config['auth_db'] = 'auth';// Temporaly configuration
 
 /*
 |--------------------------------------------------------------------------
@@ -103,7 +105,7 @@ $config['charset'] = 'UTF-8';
 | setting this variable to TRUE (boolean).  See the user guide for details.
 |
 */
-$config['enable_hooks'] = FALSE;
+$config['enable_hooks'] = TRUE;
 
 
 /*

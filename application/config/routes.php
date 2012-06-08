@@ -40,6 +40,7 @@
 
 $route['default_controller'] = "news";
 $route['news'] = 'news';
+$route['account'] = 'account';
 $route['news/view'] = 'errors/page_missing';
 $route['404_override'] = '';
 

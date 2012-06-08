@@ -171,6 +171,9 @@ if (defined('ENVIRONMENT'))
 
 	// Path to the front controller (this file)
 	define('FCPATH', str_replace(SELF, '', __FILE__));
+	
+	// Directory Separator
+	define('DS', DIRECTORY_SEPARATOR);
 
 	// Name of the "system folder"
 	define('SYSDIR', trim(strrchr(trim(BASEPATH, '/'), '/'), '/'));

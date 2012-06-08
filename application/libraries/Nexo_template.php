@@ -33,8 +33,6 @@ class Nexo_template {
 		//$this->active_template is an array like: Array(0=>(Array('id'=>'1', 'name' => 'default', 'installed'=>'1', 'active'=>'1')); so we get only the name value
 		foreach($this->active_template as $template)
 			$this->active_template = $template['name'];
-		//Definition for a directory separator (Windows: \ | Linux: /)
-		DEFINE('DS', DIRECTORY_SEPARATOR);
 		//Template folder
 		$this->template_folder = $Nexo->config->item('template_folder');
 		//Template directory [just a route]
