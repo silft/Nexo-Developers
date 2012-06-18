@@ -70,11 +70,14 @@
 	<h1>Welcome to CodeIgniter!</h1>
 
 	<div id="body">
-{news}
-		<p>{title}</p>
+	{news}
+		<p>{title} | [{total_comments} Comments]</p>
 		<code>{content}</code>
         <p><small>Posted by {author} | {date}</small></p>
-{/news}
+	{/news}
+	{comments}
+    	<code><small>Posted by {author} | {date}</small><br />{content}</code>
+    {/comments}
 	</div>
 	<p class="footer">Page rendered in <strong>{elapsed_time}</strong> seconds</p>
 </div>

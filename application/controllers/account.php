@@ -19,6 +19,7 @@ class Account extends CI_Controller {
 	public function register()
 	{
 		$data = array();
+		$this->trinity->create_account('Probando', 'pokmu123', 'pok_mu@hotmail.coms');
 		if(isset($_POST['register']))
 		{
 			$data = array(

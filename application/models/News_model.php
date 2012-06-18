@@ -20,5 +20,18 @@ class News_model extends CI_Model{
 		$this->query = $this->db->get_where('news', array('id' => $id));
 		return $this->query->result_array();
 	}
+	
+	public function get_num_comments($id)
+	{
+		$this->query = $this->db->get_where('news_comments', array('news_id' => $id));
+		return $this->query->num_rows();
+		
+	}
+	public function get_comments($id)
+	{
+		$this->db->order_by('id desc');
+		$this->query = $this->db->get_where('news_comments', array('news_id' => $id));
+		return $this->query->result_array();
+	}
 }
 ?>

@@ -29,9 +29,17 @@ class News extends CI_Controller {
 		{
 			show_404();
 		}
+		$data['comments'] = $this->news_model->get_comments($id);
 		foreach($data['news'] as $news => $return)
 		{
 			$data['news'][$news]['date'] = date("d/m/Y, g:ia", $return['date']);
+			$data['news'][$news]['total_comments'] = intval($this->news_model->get_num_comments($id));
+		}
+		foreach($data['comments'] as $comments => $return)
+		{
+			$data['comments'][$comments]['content'] = $return['content'];
+			$data['comments'][$comments]['author'] = $return['author'];
+			$data['comments'][$comments]['date'] = date("d/m/Y, g:ia", $return['date']);
 		}
 		$this->parser->parse('view', $data);
 	}
