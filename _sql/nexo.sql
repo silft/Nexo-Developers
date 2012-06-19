@@ -1,23 +1,7 @@
-/*
-Navicat MySQL Data Transfer
+/*Table structure for table `nexo_configs` */
 
-Source Server         : AsfoDB
-Source Server Version : 50515
-Source Host           : localhost:3306
-Source Database       : nexo
-
-Target Server Type    : MYSQL
-Target Server Version : 50515
-File Encoding         : 65001
-
-Date: 2012-06-02 16:27:17
-*/
-
-SET FOREIGN_KEY_CHECKS=0;
--- ----------------------------
--- Table structure for `nexo_configs`
--- ----------------------------
 DROP TABLE IF EXISTS `nexo_configs`;
+
 CREATE TABLE `nexo_configs` (
   `option_id` bigint(20) NOT NULL,
   `option_name` varchar(64) NOT NULL,
@@ -26,14 +10,12 @@ CREATE TABLE `nexo_configs` (
   PRIMARY KEY (`option_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1 ROW_FORMAT=DYNAMIC;
 
--- ----------------------------
--- Records of nexo_configs
--- ----------------------------
+/*Data for the table `nexo_configs` */
 
--- ----------------------------
--- Table structure for `nexo_custom_pages`
--- ----------------------------
+/*Table structure for table `nexo_custom_pages` */
+
 DROP TABLE IF EXISTS `nexo_custom_pages`;
+
 CREATE TABLE `nexo_custom_pages` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `title` varchar(128) NOT NULL,
@@ -44,15 +26,14 @@ CREATE TABLE `nexo_custom_pages` (
   UNIQUE KEY `id` (`id`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
 
--- ----------------------------
--- Records of nexo_custom_pages
--- ----------------------------
-INSERT INTO nexo_custom_pages VALUES ('1', 'How to connect', 'This is the how to connect guide!...You can edit it from the admin panel', 'how_to_connect', null);
+/*Data for the table `nexo_custom_pages` */
 
--- ----------------------------
--- Table structure for `nexo_news`
--- ----------------------------
+insert  into `nexo_custom_pages`(`id`,`title`,`content`,`uri`,`special_content`) values (1,'How to connect','This is the how to connect guide!...You can edit it from the admin panel','how_to_connect',NULL);
+
+/*Table structure for table `nexo_news` */
+
 DROP TABLE IF EXISTS `nexo_news`;
+
 CREATE TABLE `nexo_news` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `title` varchar(128) NOT NULL,
@@ -63,16 +44,53 @@ CREATE TABLE `nexo_news` (
   UNIQUE KEY `id` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
--- ----------------------------
--- Records of nexo_news
--- ----------------------------
-INSERT INTO nexo_news VALUES ('1', 'Testing', 'Sabeeeee<br />\r\nTesting 2', 'Drakantas', '1338232758');
-INSERT INTO nexo_news VALUES ('2', 'Sabroso', 'I love your mum.', 'Drakantas', '1338232759');
+/*Data for the table `nexo_news` */
 
--- ----------------------------
--- Table structure for `nexo_template`
--- ----------------------------
+insert  into `nexo_news`(`id`,`title`,`content`,`author`,`date`) values (1,'Testing','Sabeeeee<br />\r\nTesting 2','Drakantas','1338232758');
+insert  into `nexo_news`(`id`,`title`,`content`,`author`,`date`) values (2,'Sabroso','I love your mum.','Drakantas','1338232759');
+
+/*Table structure for table `nexo_news_comments` */
+
+DROP TABLE IF EXISTS `nexo_news_comments`;
+
+CREATE TABLE `nexo_news_comments` (
+  `id` int(3) NOT NULL AUTO_INCREMENT,
+  `news_id` int(11) NOT NULL,
+  `comment_id` varchar(128) NOT NULL DEFAULT 'main',
+  `content` text,
+  `author` varchar(128) NOT NULL,
+  `date` int(12) NOT NULL,
+  PRIMARY KEY (`id`,`news_id`,`author`,`comment_id`,`date`),
+  UNIQUE KEY `id` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+
+/*Data for the table `nexo_news_comments` */
+
+insert  into `nexo_news_comments`(`id`,`news_id`,`comment_id`,`content`,`author`,`date`) values (1,1,'main','Probando :) >_<','Drakantas',1340027923);
+
+/*Table structure for table `nexo_realms` */
+
+DROP TABLE IF EXISTS `nexo_realms`;
+
+CREATE TABLE `nexo_realms` (
+  `id` int(3) NOT NULL AUTO_INCREMENT,
+  `name` varchar(128) NOT NULL,
+  `world_db` varchar(128) NOT NULL,
+  `world_host` varchar(128) NOT NULL,
+  `char_db` varchar(128) NOT NULL,
+  `char_host` varchar(128) NOT NULL,
+  PRIMARY KEY (`id`,`name`,`world_db`,`world_host`,`char_db`,`char_host`),
+  UNIQUE KEY `id` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+
+/*Data for the table `nexo_realms` */
+
+insert  into `nexo_realms`(`id`,`name`,`world_db`,`world_host`,`char_db`,`char_host`) values (1,'Realm 1','world','127.0.0.1','characters','127.0.0.1');
+
+/*Table structure for table `nexo_template` */
+
 DROP TABLE IF EXISTS `nexo_template`;
+
 CREATE TABLE `nexo_template` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(128) NOT NULL,
@@ -81,7 +99,6 @@ CREATE TABLE `nexo_template` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
--- ----------------------------
--- Records of nexo_template
--- ----------------------------
-INSERT INTO nexo_template VALUES ('1', '', '1', '1');
+/*Data for the table `nexo_template` */
+
+insert  into `nexo_template`(`id`,`name`,`installed`,`active`) values (1,'',1,1);
