@@ -3,13 +3,13 @@ if(!DEFINED('BASEPATH')) exit('Not allowed.');
 
 class Nexo_wowemu {
 	
-	protected $emulator;
+	private $emulator;
 	
-	private $required_file;
+	private $uc_emulator;
 	
-	private $objects;
+	private $extension_object;
 	
-	private $classes;
+	private $extension_class;
 	
 	public function wowemu()
 	{		
@@ -17,56 +17,51 @@ class Nexo_wowemu {
 		$this->CI =& get_instance();
 		$this->CI->auth = $this->CI->load->database('auth', TRUE);
 		$this->emulator = strtolower($this->CI->config->item('emulator'));
+		$this->uc_emulator = ucfirst(strtolower($this->emulator));
 		DEFINE('EMULATORS_PATH', APPPATH.'emulators'.DS.$this->emulator.DS);
-		$this->required_file = array(
-			'emulator' => $this->emulator,
-			'world' => strtolower('world'),
-			'characters' => strtolower('characters'),
-		);
-		$this->objects = array(
-			'emulator' => $this->emulator,
-			'model' => $this->emulator.'_model',
-			'world' => strtolower($this->required_file['world']),
-			'characters' => strtolower($this->required_file['characters'])
-		);
-		$this->classes = array(
-			'emulator' => ucfirst($this->emulator),
-			'model' => ucfirst($this->emulator).'_model',
-			'world' => ucfirst(strtolower($this->objects['world'])),
-			'characters' => ucfirst(strtolower($this->objects['characters']))
-		);
 		
 		// Call the required files
-		if(file_exists(EMULATORS_PATH.$this->required_file['emulator'].EXT))
+		if(file_exists(EMULATORS_PATH.$this->emulator.EXT))
 		{
-			require EMULATORS_PATH.$this->required_file['emulator'].EXT;
+			require EMULATORS_PATH.$this->emulator.EXT;
 		} else {
-			show_error('NexoCMS can\'t load the '.$this->required_file['emulator'].EXT.' file, without that file Nexo can\'t run.');
-		}
-		if(file_exists(EMULATORS_PATH.'Models'.DS.$this->required_file['emulator'].'_model'.EXT))
-		{
-			require EMULATORS_PATH.'Models'.DS.$this->required_file['emulator'].'_model'.EXT;
-		} else {
-			show_error('NexoCMS can\'t load the '.$this->required_file['emulator'].EXT.' file, without that file Nexo can\'t run.');
-		}
-		if(file_exists(EMULATORS_PATH.'World'.DS.$this->required_file['world'].EXT))
-		{
-			require EMULATORS_PATH.'World'.DS.$this->required_file['world'].EXT;
-		} else {
-			show_error('NexoCMS can\'t load the '.$this->required_file['world'].EXT.' file, without that file Nexo can\'t run.');
-		}
-		if(file_exists(EMULATORS_PATH.'Characters'.DS.$this->required_file['characters'].EXT))
-		{
-			require EMULATORS_PATH.'Characters'.DS.$this->required_file['characters'].EXT;
-		} else {
-			show_error('NexoCMS can\'t load the '.$this->required_file['characters'].EXT.' file, without that file Nexo can\'t run.');
+			show_error('NexoCMS can\'t load the '.$this->emulator.EXT.' file, without that file Nexo can\'t run.');
 		}
 		
 		// Build the new objects
-		$this->CI->{$this->objects['emulator']} = new $this->classes['emulator'];
-		$this->CI->{$this->objects['model']} = new $this->classes['model'];
-		$this->CI->{$this->objects['emulator']}->{$this->objects['world']} = new $this->classes['world'];
-		$this->CI->{$this->objects['emulator']}->{$this->objects['characters']} = new $this->classes['characters'];
+		$this->CI->{$this->emulator} = new $this->uc_emulator;
+		// Get the called models
+		$this->get_model('trinity_model');
+		// Get the called extensions
+		$this->get_extension('world');
+		$this->get_extension('characters');
+	}
+	
+	private function get_model($filename)
+	{
+		$model_object = strtolower($filename);
+		$model_class = ucfirst(strtolower($filename));
+		if(file_exists(EMULATORS_PATH.'Models'.DS.$filename.EXT))
+		{
+			require EMULATORS_PATH.'Models'.DS.$filename.EXT;
+			return $this->CI->{$model_object} = new $model_class;
+			
+		} else {
+			show_error('NexoCMS can\'t load the '.$filename.EXT.' file, without that file Nexo can\'t run.');
+		}
+	}
+	private function get_extension($filename)
+	{
+		$this->extension_object = strtolower($filename);
+		$this->extension_class = ucfirst(strtolower($filename));
+		if(file_exists(EMULATORS_PATH.'Extensions'.DS.$filename.EXT))
+		{
+			require EMULATORS_PATH.'Extensions'.DS.$filename.EXT;
+			return $this->CI->{$this->emulator}->{$this->extension_object} = new $this->extension_class;
+			
+		} else {
+			show_error('NexoCMS can\'t load the '.$filename.EXT.' file, without that file Nexo can\'t run.');
+		}
 	}
 
 }

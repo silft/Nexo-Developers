@@ -5,6 +5,8 @@ class Nexo_template {
 	
 	//Var for the active template
 	private $active_template; 
+	//Var for the template wrapper
+	private $template_wrapper;
 	//Var for the URL (http://example.com)
 	private $m_url;
 	//Var for the template directory
@@ -26,21 +28,23 @@ class Nexo_template {
 	*
 	*/
 	public function __construct() {
-		$Nexo =& get_instance();
-		$Nexo->load->model('Template_model');
+		$this->NX =& get_instance();
+		$this->NX->load->model('Template_model');
 		//We need to know what is the active template
-		$this->active_template = $Nexo->Template_model->get_active_template();
+		$this->active_template = $this->NX->Template_model->get_active_template();
 		//$this->active_template is an array like: Array(0=>(Array('id'=>'1', 'name' => 'default', 'installed'=>'1', 'active'=>'1')); so we get only the name value
 		foreach($this->active_template as $template)
 			$this->active_template = $template['name'];
+			$this->template_wrapper = $template['wrapper'];
 		//Template folder
-		$this->template_folder = $Nexo->config->item('template_folder');
+		$this->template_folder = $this->NX->config->item('template_folder');
 		//Template directory [just a route]
 		$this->template_dir = FCPATH . str_replace("/", "\\", APPPATH) . $this->template_folder . DS . $this->active_template . DS;
+		$this->NX->load->_ci_view_paths = array($this->template_dir => TRUE);
 		//Website URL
-		$this->m_url = $Nexo->config->item('base_url');
+		$this->m_url = $this->NX->config->item('base_url');
 		//Config Site Title
-		$this->config_site_title = $Nexo->config->item('site_title');
+		$this->config_site_title = $this->NX->config->item('site_title');
 		//Simple route
 		$this->g_route = FCPATH . str_replace("/", "\\", APPPATH) . $this->template_folder. DS;
 		
@@ -242,7 +246,7 @@ class Nexo_template {
 			//Using system method 
 			//This method is using a secondary parameter meanwhile is under developing
 			case 'sys':
-				$this->site_title = $Nexo->Template_model->get_title() . ' - ' . $page;
+				$this->site_title = $this->NX->Template_model->get_title() . ' - ' . $page;
 			break;
 			//Using config method
 			case 'config':
@@ -442,7 +446,7 @@ class Nexo_template {
 		{
 			//We need a var for the info, we use an array
 			$r_array = array();
-			//We load the XML file...[We can't show any warning, so we use @, this is temporary]
+			//We load the XML file...
 			$mObjDOM = new DOMDocument();
 			$mObjDOM->load($this->check_template_xml(true));
 			$info_xml = $mObjDOM->getElementsByTagName("info");
@@ -486,6 +490,234 @@ class Nexo_template {
 		{
 			show_error('<h1>Error</h1><p>the active template doesn\'t have the info.xml file');
 		}
+	}
+	/*
+	*	add_widget_box
+	*	--------------------------------------------
+	*	If we use this function, we can create a custom
+	*	widget box. This is only for "premade" widgets
+	*
+	*	+Access: Public
+	*	+Parameter: Array ($i_attr) [Required]
+	*	+Parameter: Array ($s_attr) [Required]
+	*	+Patameter: Array ($t_attr) [Required]
+	*	+Parameter: String ($title) [Required]
+	*	+Parameter: String ($content) [Required]
+	*	+Returns: String
+	*
+	*	Plus: The return string looks like this,
+	*	with some example attributes.
+	*		<div id="something" class="something-else">
+	*			<div class="widget-title">
+	*				Hello world!
+	*			</div>
+	*			<div class="widget-content">
+	*				Hello world, this is a widget
+	*			</div>
+	*		</div>
+	*/
+	public function add_widget_box($i_attr, $s_attr, $t_attr, $title, $content){
+		//Var for the attributes string
+		$a = "";
+		//Var for the secondary attributes string
+		$s_a = "";
+		//Var for the third attribute string
+		$t_a = "";
+		//Var for the return string
+		$r_string = "";
+		//We need to check if the $attr parameter is an array...
+		if(is_array($i_attr))
+		{
+			foreach($i_attr as $attribute => $value)
+			{
+				$a .= ' ' . strtolower($attribute) . '="' . strtolower($value) . '"';
+			}
+			if(is_array($s_attr))
+			{
+				foreach($s_attr as $s_attribute => $s_value)
+				{
+					$s_a .= ' ' . strtolower($s_attribute) . '="' . strtolower($s_value) . '"';
+				}
+				if(is_array($t_attr))
+				{
+					foreach($t_attr as $t_attribute => $t_value)
+					{
+						$t_a .= ' ' . strtolower($t_attribute) . '="' . strtolower($t_value) . '"';
+					}
+					//we create a full string
+					$r_string .= "<div ".$a.">\n";
+					$r_string .= "	<div ".$s_a.">\n";
+					$r_string .= "		".$title."\n";
+					$r_string .= "	</div>\n";
+					$r_string .= "	<div ".$t_a.">\n";
+					$r_string .= "		".$content."\n";
+					$r_string .= "	</div>\n";
+					$r_string .= "</div>\n";
+					//And we return our complete string
+						return $r_string;
+				}
+				else
+				{
+					shhow_error('<h1>Error</h1><p>the parameter $t_attr is not a valid var type</p>');
+				}
+			}
+			else
+			{
+				show_error('<h1>Error</h1><p>the parameter $s_attr is not a valid var type</p>');
+			}
+			
+		}
+		else
+		{
+			show_error('<h1>Error</h1><p>the parameter $i_attr is not a valid var type</p>');
+		}
+	}
+	/*
+	*	body
+	*	--------------------------------------------
+	*	We can add the body tag using this function
+	*	and add some parameters on it.
+	*
+	*	+Access: Public
+	*	+Parameter: Boolean ($i)
+	*	+Parameter: Array ($attr)
+	*	+Returns: String
+	*
+	*/
+	public function body($i = true, $attr = array())
+	{
+		//We need a string for the attributes on the body tag
+		$b_a = "";
+		if($i)
+		{
+			//if we have some attributes, we add them on the body tag
+			if(is_array($attr))
+			{
+				foreach($attr as $attribute => $value)
+				{
+					$b_a .= ' ' . strtolower($attribute) . '="' . strtolower($value) . '"';
+				}
+				return "<body ". $b_a . ">\n";
+			}
+			//or we can only return the <body> tag
+			else
+			{
+				return "<body>\n";
+			}
+		}
+		else
+		{
+			return "</body>\n";
+		}
+	}
+	/*
+	*	br
+	*	--------------------------------------------
+	*	Using this function, we can emulate the
+	*	<br /> tag from HTML and add it all the times
+	*	as we need it using the parameter.
+	*
+	*	+Access: Public
+	*	+Parameter: Int ($jumps)
+	*	+Returns: String
+	*/
+	public function br($jumps = 1)
+	{
+		//We need a var for the jump times we need it
+		$br = "";
+		//if our parameter is not numeric, we return an error
+		if(!is_numeric($jumps))
+		{
+			show_error('<h1>Error</h1><p>the $jumps parameter must be numeric</p>');
+		}
+		//Or if our parameter is less than 0
+		elseif((int)$jumps <= 0)
+		{
+			show_error('<h1>Error</h1><p>the $jumps parameter must be more than 0</p>');
+		}
+		//if we have a clean and useful parameter, we use it...
+		else
+		{
+			for($i = 0; $i < $jumps; $i++)
+			{
+				$br .= "<br />\n";
+			}
+			return $br;
+		}
+	}
+	/*
+	*	h
+	*	--------------------------------------------
+	*	Using this function, we can emulate the
+	*	<h>'s tags, such as <h1> to <h6> and
+	*	add them some parameters.
+	*
+	*	+Access: Public
+	*	+Parameter: Int ($num) [Required]
+	*	+Parameter: Array($attr)
+	*	+Parameter: String ($content) [Required]
+	*	+Returns: String
+	*
+	*/
+	public function h($num, $attr = array(), $content)
+	{
+		//Var for the $attr info
+		$a_i = "";
+		//If our var $num is not numeric, we show an error
+		if(!is_numeric($num))
+		{
+			show_error('<h1>Error</h1><p>the $num parameter must be numeric</p>');
+		}
+		//If our var $num is more than 6 or less than 1, we show an error
+		elseif($num > 6 || $num < 1)
+		{
+			show_error('<h1>Error</h1><p>the $num parameter must be 1, 2, 3, 4, 5 or 6 only</p>');
+		}
+		else
+		{
+			//we get the $attr info
+			if(is_array($attr))
+			{
+				foreach($attr as $attribute => $value)
+				{
+					$a_i .= ' ' . strtolower($attribute) . '="' . strtolower($value) . '"';
+				}
+				return '<h'.$num.' '.$a_i.'>'.$content.'</h'.$num.">\n";
+			}
+			//If our $attr parameter is not an array, we show an error
+			else
+			{
+				show_error('<h1>Error</h1><p>the parameter $attr is not a valid var type</p>');
+			}
+		}
+	}
+	
+	public function parse_view($view, $data = NULL)
+	{
+		//Load the Parser library
+		$this->NX->load->library('parser');
+		
+		//Check if the view file exist, if doesn't exists display an error
+		if(!file_exists($this->template_dir.'pages'.DS.$view.EXT))
+		{
+			show_error('Can\'t load the '.$view.EXT.' page.');
+			break;
+		}
+		
+		$widget['content'] = $this->NX->parser->parse('pages'.DS.$view, $data, TRUE);
+		
+		//Check if the master template file exist, if doesn't exists display an error
+		if(!file_exists($this->template_dir.$this->template_wrapper.EXT))
+		{
+			show_error('Can\'t load the '.$this->template_wrapper.EXT.' page.');
+			break;
+		}
+		
+		$output = $this->NX->parser->parse($this->template_wrapper, $widget, TRUE);
+		$this->NX->output->set_output($output);
+		
+		return $output;
+		
 	}
 }
 ?>

@@ -42,7 +42,7 @@ class CI_Loader {
 	 * @var array
 	 * @access protected
 	 */
-	protected $_ci_view_paths		= array();
+	public $_ci_view_paths		= array();
 	/**
 	 * List of paths to load libraries from
 	 *

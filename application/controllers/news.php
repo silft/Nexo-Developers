@@ -6,7 +6,6 @@ class News extends CI_Controller {
 	function __construct()
 	{
 		parent::__construct();
-		$this->load->library('parser');
 		$this->load->model('news_model');
 		$this->limit_news = $this->config->item('limit_news');
 		$this->limit_comments = $this->config->item('limit_comments');
@@ -18,8 +17,10 @@ class News extends CI_Controller {
 		foreach($data['news'] as $news => $return)
 		{
 			$data['news'][$news]['date'] = date("d/m/Y, g:ia", $return['date']);
+			$data['news'][$news]['author'] = ucfirst(strtolower($data['news'][$news]['author']));
+			$data['news'][$news]['total_comments'] = intval($this->news_model->get_num_comments($data['news'][$news]['id']));
 		}
-		$this->parser->parse('home', $data);
+		$this->nexo_template->parse_view('home', $data);
 	}
 	
 	public function view($id)
@@ -33,15 +34,16 @@ class News extends CI_Controller {
 		foreach($data['news'] as $news => $return)
 		{
 			$data['news'][$news]['date'] = date("d/m/Y, g:ia", $return['date']);
-			$data['news'][$news]['total_comments'] = intval($this->news_model->get_num_comments($id));
+			$data['news'][$news]['author'] = ucfirst(strtolower($data['news'][$news]['author']));
+			$data['news'][$news]['total_comments'] = (int)$this->news_model->get_num_comments($id);
 		}
 		foreach($data['comments'] as $comments => $return)
 		{
 			$data['comments'][$comments]['content'] = $return['content'];
-			$data['comments'][$comments]['author'] = $return['author'];
+			$data['comments'][$comments]['author'] = ucfirst(strtolower($return['author']));
 			$data['comments'][$comments]['date'] = date("d/m/Y, g:ia", $return['date']);
 		}
-		$this->parser->parse('view', $data);
+		$this->nexo_template->parse_view('view', $data);
 	}
 }
 

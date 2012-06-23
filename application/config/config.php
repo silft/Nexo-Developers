@@ -24,7 +24,7 @@ $config['limit_comments'] = 10;
 
 $config['modules_locations'] = array(APPPATH.'modules/' => '../modules/');
 
-$config['template_folder'] = 'views';
+$config['template_folder'] = 'templates';
 
 $config['emulator'] = 'Trinity';
 

@@ -24,7 +24,7 @@ class Trinity {
 		{
 			return FALSE;
 		}
-			return $this->NX->trinity_model->create_new_account($username, $password, $email, $ip);
+		return $this->NX->trinity_model->create_new_account($username, $password, $email, $ip);
 	}
 	
 }

@@ -62,11 +62,12 @@ CREATE TABLE `nexo_news_comments` (
   `date` int(12) NOT NULL,
   PRIMARY KEY (`id`,`news_id`,`author`,`comment_id`,`date`),
   UNIQUE KEY `id` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
 /*Data for the table `nexo_news_comments` */
 
-insert  into `nexo_news_comments`(`id`,`news_id`,`comment_id`,`content`,`author`,`date`) values (1,1,'main','Probando :) >_<','Drakantas',1340027923);
+insert  into `nexo_news_comments`(`id`,`news_id`,`comment_id`,`content`,`author`,`date`) values (1,1,'main','Probando :) >_< <br />\r\nProblem? :troll: <br />\r\nProbando :) >_< <br />\r\nProblem? :troll: <br />\r\nProbando :) >_< <br />\r\nProblem? :troll:','Drakantas',1340027923);
+insert  into `nexo_news_comments`(`id`,`news_id`,`comment_id`,`content`,`author`,`date`) values (2,1,'main','Problem? :lol:','drakantas',1340027925);
 
 /*Table structure for table `nexo_realms` */
 
@@ -96,9 +97,10 @@ CREATE TABLE `nexo_template` (
   `name` varchar(128) NOT NULL,
   `installed` int(3) NOT NULL DEFAULT '0',
   `active` int(3) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`)
+  `wrapper` varchar(128) NOT NULL DEFAULT 'template',
+  PRIMARY KEY (`id`,`wrapper`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
 /*Data for the table `nexo_template` */
 
-insert  into `nexo_template`(`id`,`name`,`installed`,`active`) values (1,'',1,1);
+insert  into `nexo_template`(`id`,`name`,`installed`,`active`,`wrapper`) values (1,'grunged',1,1,'template');
