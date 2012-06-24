@@ -10,13 +10,15 @@ class Nexo_template {
 	//Var for the URL (http://example.com)
 	private $m_url;
 	//Var for the template directory
-	private $template_dir;
+	public $template_dir;
 	//Var for the site title
 	private $site_title;
 	//Var for the config site title (used on site_title() method)
 	private $config_site_title;
 	//Var for the route parameter (used on load_template_file() method)
 	private $g_route;
+	//Var for the global variables for the template
+	private $global_items;
 	//Var for the BBCode String
 	protected $bbcode_string;
 	//Var for the template folder config
@@ -70,7 +72,7 @@ class Nexo_template {
 	*	+Returns: Void
 	*
 	*/
-	public function load_static_content($type, $name, $direct = TRUE, $content = '', $ext = '.jpg') {
+	public function load_static_content($type, $name, $direct = TRUE, $ext = 'jpg', $content = NULL) {
 		/*
 		* First, we check the type of the content, we save it on a new name and we add the name on the var.
 		* Valid types: CSS, JS and IMAGES only.
@@ -85,36 +87,36 @@ class Nexo_template {
 				*		$name = 'style'
 				*		$full_name = 'style.css'
 				*/
-				$full_name = $name . '.' . $full_name;
+				$full_name = $name.'.'.$full_name;
 				if($direct)
 				{
-					$output = "<link rel=\"stylesheet\" type=\"text/css\" href=\"".$this->m_url . '/application/'.$this->template_folder.'/'.$this->active_template."/".$full_name."\" />\n";
-					return $output;
+					$output ="<link rel=\"stylesheet\" type=\"text/css\" href=\"".$this->m_url.APPPATH.$this->template_folder.'/'.$this->active_template.'/'.$full_name."\" />\n";
+					echo $output;
 				}
 				else
 				{
 					$output = "<style type=\"text/css\">\n";
 					$output .= $content."\n";
 					$output .= "</style>\n";
-					return $output;
+					echo $output;
 				}
 			break;
 			//If $type == 'js'
 			case 'js':
 				$full_name = 'js';
 				//Same functionality as CSS
-				$full_name = $name . '.' . $full_name;
+				$full_name = $name.'.'.$full_name;
 				if($direct)
 				{
-					$output = "<script type=\"text/javascript\" src=\"".$this->m_url . '/application/'.$this->template_folder.'/'.$this->active_template."/".$full_name."\"></script>\n";
-					return $output;
+					$output = "<script type=\"text/javascript\" src=\"".$this->m_url.APPPATH.$this->template_folder.'/'.$this->active_template.'/'.$full_name."\"></script>\n";
+					echo $output;
 				}
 				else
 				{
 					$output = "<script type=\"text/javascript\">\n";
 					$output .= $content."\n";
 					$output .= "</script>\n";
-					return $output;
+					echo $output;
 				}
 			break;
 			//If $type == 'image'
@@ -123,15 +125,15 @@ class Nexo_template {
 				/*
 				*	Example:
 				*		$name = 'hello_world'
-				*		$ext = '.jpg'
+				*		$ext = 'jpg'
 				*		$full_name = 'hello_world' . '.jpg' -> 'hello_world.jpg'
 				*/
-				$full_name = $name . $ext;
-				$output = "<img src=\"".$this->m_url . '/application/'.$this->template_folder.'/'.$this->active_template."/".$full_name."\" alt=\"".$full_name."\" />\n";
-				return $output;
+				$full_name = $name.'.'.$ext;
+				$output = "<img src=\"".$this->m_url.APPPATH.$this->template_folder.'/'.$this->active_template.'/'.$full_name."\" alt=\"".$full_name."\" />\n";
+				echo $output;
 			break;
 			default:
-				show_error('<h1>Error</h1><p>the function <b>load_static_content()</b> have an invalid parameter, check your <b>$type</b> parameter</p>');
+				show_error('<p>The function <b>load_static_content()</b> have an invalid parameter, check your <b>$type</b> parameter</p>');
 			break;
 		}
 
@@ -156,27 +158,27 @@ class Nexo_template {
 		if($new_name)
 		{
 			//If the file with the new name exists, we load it
-			if(file_exists($this->template_dir . $name . EXT))
+			if(file_exists($this->template_dir.$name.EXT))
 			{
-				require ($this->template_dir . $name . EXT);
+				require ($this->template_dir.$name.EXT);
 			}
 			//If the file doesn't exists, we show an error
 			else
 			{
-				show_error('<h1>Error</h1><p>the file <b>'.$name . EXT .'</b> of the template <b>'.$this->active_template.'</b> doesn\'t exists!</p>');
+				show_error('<p>The file <b>'.$name.EXT.'</b> of the template <b>'.$this->active_template.'</b> doesn\'t exists!</p>');
 			}
 		}
 		else
 		{
 			//If the name is "header.php", we load it
-			if(file_exists($this->template_dir . 'header.php'))
+			if(file_exists($this->template_dir.'header.php'))
 			{
-				require ($this->template_dir . 'header.php');
+				require ($this->template_dir.'header.php');
 			}
 			//Or else, we show an error.
 			else
 			{
-				show_error('<h1>Error</h1><p>the file <b>header.php</b> of the template <b>'.$this->active_template.'</b> doesn\'t exists!</p>');
+				show_error('<p>The file <b>header.php</b> of the template <b>'.$this->active_template.'</b> doesn\'t exists!</p>');
 			}
 		}
 	}
@@ -207,7 +209,7 @@ class Nexo_template {
 			//If the file doesn't exists, we show an error
 			else
 			{
-				show_error('<h1>Error</h1><p>the file <b>'.$name . EXT . '</b> of the template <b>'.$this->active_template.'</b> doesn\'t exists!</p>');
+				show_error('<p>The file <b>'.$name . EXT . '</b> of the template <b>'.$this->active_template.'</b> doesn\'t exists!</p>');
 			}
 		}
 		else
@@ -219,7 +221,7 @@ class Nexo_template {
 			}
 			else
 			{
-				show_error('<h1>Error</h1><p>the file <b>footer.php</b> of the template <b>'.$this->active_template.'</b> doesn\'t exists!</p>');
+				show_error('<p>The file <b>footer.php</b> of the template <b>'.$this->active_template.'</b> doesn\'t exists!</p>');
 			}
 		}
 	}
@@ -254,7 +256,7 @@ class Nexo_template {
 			break;
 			//if the method is wrong, we show an error
 			default:
-				show_error('<h1>Error</h1><p>the function <b>site_title()</b> have an invalid parameter, check your <b>$method</b> parameter</p>');
+				show_error('<p>The function <b>site_title()</b> have an invalid parameter, check your <b>$method</b> parameter</p>');
 			break;
 		}
 		//Returns the site title
@@ -289,7 +291,7 @@ class Nexo_template {
 			//If don't, we show an error...
 			else
 			{
-				show_error('<h1>Error</h1><p>the file <b>'.$name . EXT . '</b> of the template <b>'.$this->active_template.'</b> doesn\'t exists!</p>');
+				show_error('<p>The file <b>'.$name . EXT . '</b> of the template <b>'.$this->active_template.'</b> doesn\'t exists!</p>');
 			}
 		}
 		//If we need a template file from another route, we try to find it
@@ -303,7 +305,7 @@ class Nexo_template {
 			//If don't, we show an error...
 			else
 			{
-				show_error('<h1>Error</h1><p>the file <b>'.$name . EXT .'</b> on the custom load using load_template_file doesn\'t exists!</p>');
+				show_error('<p>The file <b>'.$name . EXT .'</b> on the custom load using load_template_file doesn\'t exists!</p>');
 			}
 		}
 		
@@ -488,7 +490,7 @@ class Nexo_template {
 		}
 		else
 		{
-			show_error('<h1>Error</h1><p>the active template doesn\'t have the info.xml file');
+			show_error('<p>The active template doesn\'t have the info.xml file');
 		}
 	}
 	/*
@@ -558,18 +560,18 @@ class Nexo_template {
 				}
 				else
 				{
-					shhow_error('<h1>Error</h1><p>the parameter $t_attr is not a valid var type</p>');
+					shhow_error('<p>The parameter $t_attr is not a valid var type</p>');
 				}
 			}
 			else
 			{
-				show_error('<h1>Error</h1><p>the parameter $s_attr is not a valid var type</p>');
+				show_error('<p>The parameter $s_attr is not a valid var type</p>');
 			}
 			
 		}
 		else
 		{
-			show_error('<h1>Error</h1><p>the parameter $i_attr is not a valid var type</p>');
+			show_error('<p>The parameter $i_attr is not a valid var type</p>');
 		}
 	}
 	/*
@@ -628,12 +630,12 @@ class Nexo_template {
 		//if our parameter is not numeric, we return an error
 		if(!is_numeric($jumps))
 		{
-			show_error('<h1>Error</h1><p>the $jumps parameter must be numeric</p>');
+			show_error('<p>The $jumps parameter must be numeric</p>');
 		}
 		//Or if our parameter is less than 0
 		elseif((int)$jumps <= 0)
 		{
-			show_error('<h1>Error</h1><p>the $jumps parameter must be more than 0</p>');
+			show_error('<p>The $jumps parameter must be more than 0</p>');
 		}
 		//if we have a clean and useful parameter, we use it...
 		else
@@ -666,12 +668,12 @@ class Nexo_template {
 		//If our var $num is not numeric, we show an error
 		if(!is_numeric($num))
 		{
-			show_error('<h1>Error</h1><p>the $num parameter must be numeric</p>');
+			show_error('<p>The $num parameter must be numeric</p>');
 		}
 		//If our var $num is more than 6 or less than 1, we show an error
 		elseif($num > 6 || $num < 1)
 		{
-			show_error('<h1>Error</h1><p>the $num parameter must be 1, 2, 3, 4, 5 or 6 only</p>');
+			show_error('<p>The $num parameter must be 1, 2, 3, 4, 5 or 6 only</p>');
 		}
 		else
 		{
@@ -687,7 +689,7 @@ class Nexo_template {
 			//If our $attr parameter is not an array, we show an error
 			else
 			{
-				show_error('<h1>Error</h1><p>the parameter $attr is not a valid var type</p>');
+				show_error('<p>The parameter $attr is not a valid var type</p>');
 			}
 		}
 	}
@@ -704,7 +706,11 @@ class Nexo_template {
 			break;
 		}
 		
-		$widget['content'] = $this->NX->parser->parse('pages'.DS.$view, $data, TRUE);
+		$this->global_items = array(
+			'title'     => $this->NX->config->item('site_title'),
+			'content'   => $this->NX->parser->parse('pages'.DS.$view, $data, TRUE),
+			'copyright' => $this->NX->config->item('copyright')
+		);
 		
 		//Check if the master template file exist, if doesn't exists display an error
 		if(!file_exists($this->template_dir.$this->template_wrapper.EXT))
@@ -712,8 +718,8 @@ class Nexo_template {
 			show_error('Can\'t load the '.$this->template_wrapper.EXT.' page.');
 			break;
 		}
-		
-		$output = $this->NX->parser->parse($this->template_wrapper, $widget, TRUE);
+				
+		$output = $this->NX->parser->parse($this->template_wrapper, $this->global_items, TRUE);
 		$this->NX->output->set_output($output);
 		
 		return $output;

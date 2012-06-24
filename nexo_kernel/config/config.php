@@ -18,6 +18,8 @@ $config['base_url']	= 'http://localhost/';
 
 $config['site_title'] = 'Nexo-CMS | Website';
 
+$config['copyright'] = 'NexoCMS';
+
 $config['limit_news'] = 5;
 
 $config['limit_comments'] = 10;
@@ -238,7 +240,7 @@ $config['cache_path'] = '';
 | MUST set an encryption key.  See the user guide for info.
 |
 */
-$config['encryption_key'] = '';
+$config['encryption_key'] = '6b01be452f6bb615ee25a22c38ff2ed1';
 
 /*
 |--------------------------------------------------------------------------

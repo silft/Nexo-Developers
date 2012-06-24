@@ -72,7 +72,14 @@ if (defined('ENVIRONMENT'))
  * NO TRAILING SLASH!
  *
  */
-	$application_folder = 'application';
+	$application_folder = 'nexo_kernel';
+	
+/*
+ *---------------------------------------------------------------
+ * THIRD PARTY FOLDER NAME
+ *---------------------------------------------------------------
+ */
+	$third_party_path = 'third_party';
 
 /*
  * --------------------------------------------------------------------
@@ -168,6 +175,9 @@ if (defined('ENVIRONMENT'))
 
 	// Path to the system folder
 	define('BASEPATH', str_replace("\\", "/", $system_path));
+	
+	// Path to the third party folder
+	define('THIRDPATH', str_replace("\\", "/", $third_party_path));
 
 	// Path to the front controller (this file)
 	define('FCPATH', str_replace(SELF, '', __FILE__));
@@ -178,7 +188,21 @@ if (defined('ENVIRONMENT'))
 	// Name of the "system folder"
 	define('SYSDIR', trim(strrchr(trim(BASEPATH, '/'), '/'), '/'));
 
+	// The path to the "third_party" folder
+	if(realpath($third_party_path) !== FALSE)
+	{
+		$third_party_path = realpath($third_party_path).'/';
+	}
 
+	// ensure there's a trailing slash
+	$third_party_path = rtrim($third_party_path, '/').'/';
+
+	// Is the system path correct?
+	if(!is_dir($third_party_path))
+	{
+		exit("Your third_party folder path does not appear to be set correctly. Please open the following file and correct this: ".pathinfo(__FILE__, PATHINFO_BASENAME));
+	}
+	
 	// The path to the "application" folder
 	if (is_dir($application_folder))
 	{

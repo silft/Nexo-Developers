@@ -36,11 +36,11 @@ a:hover {
 	color: #f5b50c;
 }
 
-input[type="text"].username {
+input[type="text"] {
 	width: 93%;
 	padding: 5px;
 	background: #403933;
-	border: 1px solid #4f4842;
+	border: 1px solid rgba(255, 255, 255, 0.1);
 	color: #757575;
 	text-shadow: 1px 1px 0px rgba(0, 0, 0, 0.5);
 	box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
@@ -50,16 +50,16 @@ input[type="text"].username {
 	-ms-transition: all 0.5s;
 	-o-transition: all 0.5s;
 }
-input[type="text"].username:focus {
+input[type="text"]:focus {
 	color: #b5b3b4;
 	background: #4d463e;
 }
 
-input[type="password"].password {
+input[type="password"] {
 	width: 93%;
 	padding: 5px;
 	background: #403933;
-	border: 1px solid #4f4842;
+	border: 1px solid rgba(255, 255, 255, 0.1);
 	color: #757575;
 	text-shadow: 1px 1px 0px rgba(0, 0, 0, 0.5);
 	box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
@@ -70,7 +70,7 @@ input[type="password"].password {
 	-o-transition: all 0.5s;
 }
 
-input[type="password"].password:focus {
+input[type="password"]:focus {
 	color: #b5b3b4;
 	background: #4d463e;
 }
@@ -78,7 +78,7 @@ input[type="password"].password:focus {
 input[type="submit"] {
 	font-size: 12px;
 	color: #cccccc;
-	padding: 10px 20px;
+	padding: 13px 20px;
 	background: -moz-linear-gradient(
 		top,
 		#574d43 0%,
@@ -88,6 +88,7 @@ input[type="submit"] {
 		from(#574d43),
 		to(#38332f));
 	border: none;
+	border-radius: 3px;
 	-moz-box-shadow:
 		1px 1px 2px rgba(000,000,000,0.5),
 		inset 0px 1px 0px rgba(138,133,128,0.3);
@@ -97,14 +98,14 @@ input[type="submit"] {
 	text-shadow:
 		0px -1px 0px rgba(000,000,000,0.5),
 		0px 0px 0px rgba(255,255,255,0.9);
-	transition: all 0.2s;
-	-webkit-transition: all 0.2s;
-	-moz-transition: all 0.2s;
-	-ms-transition: all 0.2s;
-	-o-transition: all 0.2s;
+	transition: all 0.5s;
+	-webkit-transition: all 0.5s;
+	-moz-transition: all 0.5s;
+	-ms-transition: all 0.5s;
+	-o-transition: all 0.5s;
 }
 
-input[type="submit"]:hover {
+input[type="submit"]:active {
 	color: #f5b50c;
 	background: -moz-linear-gradient(
 		top,
@@ -114,11 +115,6 @@ input[type="submit"]:hover {
 		linear, left top, left bottom, 
 		from(#38332f),
 		to(#574d43));
-}
-
-input[type="submit"]:active {
-	color: #f5b50c;
-	background: #38332f;
 }
 
 #header {
@@ -392,4 +388,80 @@ input[type="submit"]:active {
 	width: 400px;
 	text-align: left;
 	padding: 4px 4px 4px 4px;
+}
+
+.register-label {
+	margin: 0 auto;
+	width: 460px;
+	background: rgba(0, 0, 0, 0.1);
+	border-radius: 3px;
+	border: 1px solid rgba(255, 255, 255, 0.2);
+	box-shadow: 0px 0px 7px rgba(0, 0, 0, 0.1);
+}
+
+.register-label .title {
+	color: #f5b50c;
+}
+
+.register-label .left {
+	max-width: 200px;
+	float: left;
+	margin: 0;
+}
+
+.register-label .right {
+	margin: 0;
+	width: 230px;
+	padding: 5px 5px;
+	float: right;
+}
+
+.register-label .captcha {
+	height: 21px;
+	width: 81px;
+	padding: 8px 5px 5px 35px;
+	text-transform: uppercase;
+	color: rgba(255, 255, 255, 0.4);
+	background: url('../images/captcha-bg.large.png');
+}
+
+.register-label .tos {
+	color: rgba(255, 255, 255, 0.3);
+}
+
+.register-label .do_register {
+	margin-bottom: 5px;
+}
+.register-label label.label_check {
+	cursor: pointer;
+	padding-bottom: 1px;
+}
+.label_check input, .label_radio input {
+	 margin-right: 5px; 
+}
+.has-js .label_check, .has-js .label_radio {
+	padding-left: 20px;
+}
+.has-js .label_radio {
+	background: url(radio-off.png) no-repeat;
+}
+.has-js label.r_on {
+	background: url(radio-on.png) no-repeat;
+}
+.has-js .label_check {
+	background: url('../images/checkbox.normal.png') no-repeat;
+}
+.has-js .label_check:hover {
+	background: url('../images/checkbox.hover.png') no-repeat;
+}
+.has-js label.c_on {
+	background: url('../images/checkbox.active.png') no-repeat;
+}
+.has-js label.c_on:hover {
+	background: url('../images/checkbox.active.png') no-repeat;
+}
+.has-js .label_check input, .has-js .label_radio input {
+	position: absolute;
+	left: -9999px;
+	box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
 }

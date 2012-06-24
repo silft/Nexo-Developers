@@ -1,13 +1,14 @@
+<?php if(!defined('BASEPATH')) exit('<html><head><title>403 Forbidden</title></head><body><p>Directory access is forbidden.</p></body></html>'); ?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<title>NexoCMS | Design Preview</title>
-<link rel="stylesheet" type="text/css" href="/application/templates/grunged/css/style.css" />
+<title>{title}</title>
+<?php $this->nexo_template->load_static_content('css', 'css/style'); ?>
 </head>
 <body>
 <div id="header">
 	<div class="logo">
-		<a href="#"><img src="/application/templates/grunged/images/logo.png" /></a>
+		<a href="#"><?php $this->nexo_template->load_static_content('image', 'images/logo', TRUE, 'png'); ?></a>
 	</div>
 	<div class="navigation">
 		<ul>
@@ -64,8 +65,10 @@
 	<div class="center">
     	<div id="slider">
         	<div id="slider-images">
-        	<img src="/application/templates/grunged/images/slider/1.jpg" width="598" height="188" />
-            <img src="/application/templates/grunged/images/slider/2.jpg" width="598" height="188" />
+        	<?php 
+			$this->nexo_template->load_static_content('image', 'images/slider/1');
+            $this->nexo_template->load_static_content('image', 'images/slider/2');
+			?>
             </div>
             	<div id="slider-dots"></div>
         </div>
@@ -77,7 +80,7 @@
 		<div style="margin:0 auto;background:#1a1a1a;width:900px;margin-top:10px;box-shadow: inset 0px 1px 0px rgba(60, 60, 60, 0.5), 0px -1px 3px rgba(0, 0, 0, 0.5);">
 			<div style="margin:0 auto;color:#4b443a;text-shadow:1px 1px 2px rgba(0, 0, 0, 0.5);height:80px;">
 				<div style="float: left;">
-					<div style="width: 200px; float: left; padding-top: 30px; padding-left: 150px;">Copyright &copy; <b>NexoCMS</b> 2012</div>
+					<div style="width: 200px; float: left; padding-top: 30px; padding-left: 150px;">Copyright &copy; <b>{copyright}</b> 2012 {elapsed_time} seconds</div>
 				</div>
 				<div style="float: right; padding: 30px; margin: 0;">
 					<a href="#">Home</a> | <a href="#">Account</a> | <a href="#">Terms of Service</a> | <a href="#">Forums</a> | <a href="#">Contact Us</a>
@@ -85,16 +88,10 @@
 			</div>
 		</div>
 	</footer>
-<script type="text/javascript" src="/application/templates/grunged/js/jquery-1.7.2.min.js"></script>
-<script type="text/javascript" src="/application/templates/grunged/js/jquery.cycle.js"></script>
-<script type="text/javascript">
-		$(document).ready(function(){
-			$("#slider-images").cycle({
-				fx : 'fade',
-				speed : 500,
-				pager : '#slider-dots'
-			});
-		});
-</script>
+    <?php
+    $this->nexo_template->load_static_content('js', 'js/jquery-1.7.2.min');
+	$this->nexo_template->load_static_content('js', 'js/jquery.cycle');
+	$this->nexo_template->load_static_content('js', 'js/grunded.master');
+	?>
 </body>
 </html>
